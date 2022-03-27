@@ -1,4 +1,8 @@
-const socket = io();
+const socket = io("http://localhost:3000");
+
+socket.on("connect", () => {
+	console.log("blclient");
+});
 
 window.onload = function () {
 	let readyplayer1 = false;
