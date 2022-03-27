@@ -1,3 +1,5 @@
+const socket = io();
+
 window.onload = function () {
 	let readyplayer1 = false;
 	let readyplayer2 = false;

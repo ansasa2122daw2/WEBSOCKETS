@@ -1,8 +1,13 @@
-const app = require('http').createServer(onRequest);
-const io = require('socket.io')(app);
+const express = require("express");
+let app = express();
+let port = 8888;
 
-const fs = require('fs');
-const url = require("url");
+const io = require("socket.io").listen(app.listen(port));
+console.log("Listening on port " + port);
 
-console.log('servidor iniciat');
-app.listen(8888);
+io.sockets.on("connection", function (socket) {
+	socket.emit("missatge", { missatge: "Benvingut" });
+	socket.on("enviar", function (data) {
+		io.sockets.emit("missatge", data);
+	});
+});
