@@ -1,13 +1,40 @@
 var express = require("express");
+var http = require("http");
 var path = require("path");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 
 var loginController = require("./controllers/index");
+const { disconnect } = require("process");
 
 var app = express();
+var server = http.createServer(app);
+server.listen("4000");
+var io = require("socket.io")(server);
 
+// WEBSOCKETS
+io.on("connect", (socket) => {
+	console.log(`Client connected [id=${socket.id}]`);
+	socket.emit("message", "holi");
+
+	//broadcast when a user connects
+	socket.broadcast.emit("message", "A user joined");
+
+	socket.on("disconnect", () => {
+		io.emit("message", "User left");
+	});
+
+	//player 1 clicando boton
+	socket.on("player1", (readyplayer1) => {
+		console.log(readyplayer1);
+	});
+
+	//player 2 clicando boton
+	socket.on("player2", (readyplayer2) => {
+		console.log(readyplayer2);
+	});
+});
 //MOGODB
 // var MongoClient = require("mongodb").MongoClient;
 // MongoClient.connect("mongodb://localhost:27017", function (err, db) {

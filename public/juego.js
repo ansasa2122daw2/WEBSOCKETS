@@ -1,21 +1,36 @@
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:4000");
+let readyplayer1 = false;
+let readyplayer2 = false;
 
-socket.on("connect", () => {
-	console.log("blclient");
+socket.on("connect", (socket) => {
+	console.log(`Client connected [id=${socket}]`);
+});
+
+socket.on("message", (message) => {
+	console.log(message);
 });
 
 window.onload = function () {
-	let readyplayer1 = false;
-	let readyplayer2 = false;
+	//
+	//document.getElementById("ReadyPlayer2").style.disabled = true;
 	//Timer
 	let n = 0;
 	let l = document.getElementById("contador");
+
 	document.getElementById("ReadyPlayer1").addEventListener("click", () => {
 		readyplayer1 = true;
+		socket.emit("player1", readyplayer1);
+		document.getElementById("ReadyPlayer1").style.backgroundColor = "red";
+		document.getElementById("ReadyPlayer1").disabled = true;
+		document.getElementById("ReadyPlayer1").style.cursor = "auto";
 		iniciarContador();
 	});
 	document.getElementById("ReadyPlayer2").addEventListener("click", () => {
 		readyplayer2 = true;
+		socket.emit("player2", readyplayer2);
+		document.getElementById("ReadyPlayer2").style.backgroundColor = "red";
+		document.getElementById("ReadyPlayer2").disabled = true;
+		document.getElementById("ReadyPlayer2").style.cursor = "auto";
 		iniciarContador();
 	});
 	function iniciarContador() {
@@ -24,8 +39,13 @@ window.onload = function () {
 				l.innerHTML = n;
 				n++;
 			}, 1000);
+			//readyplayer1
 			document.getElementById("tabla").addEventListener("click", (e) => {
 				document.getElementById(e.target.id).style.backgroundColor = "red";
+			});
+			//readyplayer2
+			document.getElementById("tabla").addEventListener("click", (e) => {
+				document.getElementById(e.target.id).style.backgroundColor = "blue";
 			});
 		}
 	}

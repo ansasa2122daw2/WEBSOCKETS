@@ -4,28 +4,33 @@
  * Module dependencies.
  */
 
-var app = require("../app");
-var debug = require("debug")("ExpressGenerator:server");
-var http = require("http");
+//var app = require("../app");
+//var debug = require("debug")("ExpressGenerator:server");
+//var http = require("http");
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "4000");
+//var port = normalizePort(process.env.PORT || "4000");
 app.set("port", port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
-var io = require("socket.io")(server);
+//var server = http.createServer(app);
+//var io = require("socket.io")(server);
 
 // WEBSOCKETS
-io.on("connect", (socket) => {
-	console.log(`Client connected [id=${socket.id}]`);
-});
+// io.on("connect", (socket) => {
+// 	console.log(`Client connected [id=${socket.id}]`);
+// });
+
+// io.on("playerReady", (player) => {
+// 	console.log("www29");
+// 	io.broadcast("playerconnected", player);
+// });
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -90,3 +95,5 @@ function onListening() {
 	var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
 	debug("Listening on " + bind);
 }
+
+module.exports = server;
