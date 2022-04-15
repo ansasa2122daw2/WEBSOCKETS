@@ -6,12 +6,26 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 
 var loginController = require("./controllers/index");
-const { disconnect } = require("process");
 
 var app = express();
 var server = http.createServer(app);
 server.listen("4000");
 var io = require("socket.io")(server);
+
+let botonJugador = "";
+
+//EXPRESS BOTONES
+
+// server.post("/botonClicked", (req, res) => {
+// 	console.log("fsdfs");
+// 	botonJugador = JSON.parse(req).botonClicked;
+// 	console.log("--->" + botonJugador);
+// 	res.end();
+// });
+
+// app.post("/preguntarBoton", (req, res) => {
+// 	res.end(botonJugador);
+// });
 
 // WEBSOCKETS
 io.on("connect", (socket) => {
@@ -34,10 +48,23 @@ io.on("connect", (socket) => {
 	socket.on("player2", (readyplayer2) => {
 		console.log(readyplayer2);
 	});
+
+	socket.on("boton1", (data) => {
+		console.log(data);
+		console.log("funciona?");
+		socket.broadcast.emit(data);
+	});
+
+	socket.on("color", (data) => {
+		console.log(data);
+		console.log("buenas");
+	});
 });
+
 //MOGODB
-// var MongoClient = require("mongodb").MongoClient;
-// MongoClient.connect("mongodb://localhost:27017", function (err, db) {
+var MongoClient = require("mongodb").MongoClient;
+
+// var db = MongoClient.connect("mongodb://localhost:27017", function (err, db) {
 // 	if (err) {
 // 		throw err;
 // 	}
@@ -53,8 +80,7 @@ io.on("connect", (socket) => {
 // 		});
 // });
 
-// app.get("/login", loginController.logIn());
-
+app.post("/login", loginController.logIn(db));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 

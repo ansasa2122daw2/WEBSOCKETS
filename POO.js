@@ -1,9 +1,11 @@
 class Jugador {
-	constructor(nombre, pass, puntuacion, tiempo) {
+	constructor(identificador, nombre, pass, puntuacion, tiempo) {
+		this.identificador = identificador;
 		this.nombre = nombre;
 		this.pass = pass;
 		this.puntuacion = puntuacion;
 		this.tiempo = tiempo;
+		this.ready = false;
 	}
 
 	getNombre() {
@@ -68,3 +70,5 @@ class Partida {
 		espectadores.push(espectador);
 	}
 }
+
+(module.exports = Jugador), Partida;

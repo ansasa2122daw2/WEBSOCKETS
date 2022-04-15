@@ -7,28 +7,29 @@ router.get("/", function (req, res, next) {
 	res.render("login");
 });
 
-//LOGIN
-// exports.logIn = function (db) {
+// router.logIn = function (db) {
 // 	return function (req, res) {
-// 		var nombrev = req.body.nombre;
-// 		var passv = req.body.pass;
-
-// 		var collection = db.get("Jugadores");
-
-// 		// desen a la BD
-// 		collection.find(
+// 		let nombre = req.body.nombre;
+// 		let pass = req.body.pass;
+// 		console.log(db);
+// 		// var collection = db.get("Jugadores");
+// 		// console.log("hola" + collection);
+// 		// //desen a la BD
+// 		db.find(
 // 			{
-// 				nombre: nombrev,
-// 				pass: passv,
+// 				nombre: nombre,
 // 			},
 // 			function (err, doc) {
 // 				if (err) {
 // 					res.send("problemes amb la base de dades.");
+// 				}
+// 				if (!doc) {
+// 					res.send("No existe este usuario");
+// 				}
+// 				if (doc.pass !== pass) {
+// 					res.send("Contraseña o usuario incorrecto");
 // 				} else {
-// 					//canviem URL al navegador
-// 					res.location(path.join(__dirname, "../public", "juego.html"));
-// 					//redireccionem
-// 					res.redirect(path.join(__dirname, "../public", "juego.html"));
+// 					return res.sendFile(path.join(__dirname, "../public", "juego.html"));
 // 				}
 // 			}
 // 		);
