@@ -1,0 +1,10 @@
+extends layout
+
+block contingut
+  h2 Menu
+  h3 Escull una partida 
+  div(class="partidas")
+    div(class="partida") Partida 1
+        button(onclick="entrarPartida(this.id)" id=1) Entra a la partida
+    div(class="partida") Partida 2 (Amb espectadors)
+        button(onclick="entrarPartida(this.id)" id=2) Entra a la partida

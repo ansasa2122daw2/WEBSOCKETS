@@ -1,0 +1,27 @@
+#loginCaja{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 400px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: rgba(170, 202, 240, 0.438);
+}
+
+h2{
+    text-align: center;
+}
+
+form div{
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+label{
+    margin-right: 10px;
+}
+
+#buttonLogin{
+    margin-left: 80%;
+    margin-bottom: 20px;
+}

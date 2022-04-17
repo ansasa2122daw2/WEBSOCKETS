@@ -1,0 +1,34 @@
+.header{
+    display: flex;
+    flex-direction:row ;
+    justify-content:space-between;
+    border-bottom: 2px solid black;
+    
+}
+
+body{
+    background: linear-gradient(to right, lightblue, lightgrey);
+}
+
+img{
+    width: 200px;
+}
+
+#express{
+    margin-left: 50px;
+    visibility: hidden;
+}
+
+#websockets{
+    visibility: hidden;
+}
+
+#pug{
+    width: 110px;
+    margin-right: 100px;
+}
+
+#titulo{
+margin-left: -250px;
+font-size: 40px;
+}

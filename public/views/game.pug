@@ -1,0 +1,21 @@
+extends layout
+
+block contingut
+    h2 Partida
+    div(class="divGame")
+        div(class="jugadorTu")
+            h4 Jugador 1
+            img(id="user" src="/user.png")
+            div(id="colorJugadorTu")
+        div(class="divTablero")
+            table(id="tablaPartida" width="700px" height="600px" border="0" cellspacing="2" cellpadding="2" bgcolor="#000000")
+                - for (let x = 0; x < 5; x++)
+                    tr(bgcolor="white")
+                        - for (let y = 0; y < 7; y++)
+                            td(bgcolor="white")
+        div(class="jugadorContrario")
+            h4 Jugador 2
+            img(id="user" src="/user.png")
+            div(id="colorJugadorContrario")
+        
+        

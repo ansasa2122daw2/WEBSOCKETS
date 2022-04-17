@@ -1,0 +1,32 @@
+.divGame{
+    display: flex;
+    justify-content: space-around;
+}
+
+.jugadorTu{
+    text-align: center;
+    width: 150px;
+    border-radius: 200px;
+    margin-top: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: red;
+}
+
+.jugadorContrario{
+    text-align: center;
+    width: 150px;
+    border-radius: 200px;
+    margin-top: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: green;
+}
+
+#user{
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,15 @@
+
+extends layout
+
+block contingut
+  div(id="loginCaja")
+    h2 Log In
+    form(name="logIn" method='POST' action='/loginMongo')
+      div
+        label(for='nombre') Nombre:   &nbsp;
+        input(type='text' id='nombre' placeholder='nombre' name='nombre')
+      div
+        label(for='password') Password:
+        input(type='password' id='password' placeholder='password' name='password')
+      button(id="buttonLogin", type='submit') Log in
+      div(role="alert" style=error ? "display:block": "display:none") T'has equivocat, torna a provar
