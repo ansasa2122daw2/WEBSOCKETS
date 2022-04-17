@@ -2,11 +2,13 @@ extends layout
 
 block contingut
     h2 Partida
+    h4(id="timer") 0
     div(class="divGame")
         div(class="jugadorTu")
             h4 Jugador 1
             img(id="user" src="/user.png")
             div(id="colorJugadorTu")
+
         div(class="divTablero")
             table(id="tablaPartida" width="700px" height="600px" border="0" cellspacing="2" cellpadding="2" bgcolor="#000000")
                 - for (let x = 0; x < 5; x++)

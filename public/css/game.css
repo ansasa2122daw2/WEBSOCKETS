@@ -3,6 +3,13 @@
     justify-content: space-around;
 }
 
+#timer{
+    width: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
 .jugadorTu{
     text-align: center;
     width: 150px;

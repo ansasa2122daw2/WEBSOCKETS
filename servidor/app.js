@@ -9,7 +9,7 @@ const { Partida, Jugador } = require("./POO");
 const app = express();
 const server = http.createServer(app);
 const wss = new Server(server);
-let arrayPartides = new Array(2);
+let arrayPartides = [];
 
 app.use(express.static(path.join(__dirname, "../public/css")));
 app.use(express.static(path.join(__dirname, "../public/imgs")));
