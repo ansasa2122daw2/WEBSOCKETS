@@ -8,7 +8,7 @@ const { Partida, Jugador } = require("./POO");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const wss = new Server(server);
 let arrayPartides = new Array(2);
 
 app.use(express.static(path.join(__dirname, "../public/css")));
@@ -81,5 +81,13 @@ app.post("/entrarPartida", (req, res) => {
     }
 });
 
+//websockets
+wss.on("connection", ws => {
+    console.log("Nova conexió a la partida");
+
+    ws.on("close"), () =>{
+        console.log("Jugador/Espectador desconectat");
+    }
+})
 
 server.listen(3000, () => console.log("Iniciant Servidor al port 3000"));
