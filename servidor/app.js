@@ -25,7 +25,8 @@ app.get("/dashboard", (req, res) => res.render("dashboard"));
 app.get("/game", (req, res) => res.render("game"));
 app.get("/menu", (req, res) => res.render("menu"));
 app.get("/login", (req, res) => res.render("login"));
-app.get("/stats", (req, res) => {
+
+app.get("/puntuaciones", (req, res) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("WebSocketss");
@@ -66,28 +67,90 @@ app.post("/loginMongo", (req, res) => {
 
 //Entrar a una partida
 app.post("/entrarPartida", (req, res) => {
-    let id = req.body.id;
-    let jugador = req.body.nombre;
-    let partida;
-    arrayPartides.push( partida => new Partida(id, jugador));
-    //console.log(id);
+    let id = req.body.id ;
+    let nombre = req.body.nom;
+    console.log(arrayPartides[0])
+    if(!arrayPartides[0]){
+        arrayPartides.push( partida => new Partida(id, jugador));
+        if(arrayPartides[0].Jugador){
+            console.log(arrayPartides[0])
+        }
+    }else{
+        arrayPartides.push( partida => new Partida(id, jugador));
+    }
+
     if (arrayPartides.length == 0) {
         res.render("menu");
-        console.log("error");
     } else {
-        res.render("game", { codiPartida: id, nombre: jugador });
+        res.render("game", { codiPartida: id, nombre: nombre });
         console.log("Entrando a una partida");
         console.log(arrayPartides);
     }
 });
 
 //websockets
-wss.on("connection", ws => {
-    console.log("Nova conexió a la partida");
 
-    ws.on("close"), () =>{
-        console.log("Jugador/Espectador desconectat");
-    }
-})
+//Todos los jugadores
+let jugadores = [];
+let espectadores = [];
+let jugador;
+let jugador2;
+let espectador;
+let tablero = new Array(35).fill(0);
+let puntuacionRojo = 0;
+let puntuacionVerde = 0;
+let contador = 0;
+let interval = 0;
+
+wss.on("connection", socket => {
+
+    socket.on("open", () => console.log("Jugador conectado", socket.id));//Jugador conectado
+    socket.on("close", () => console.log("Jugador desconectado"));//Jugador desconectado
+
+    socket.on("conexionGame", data => {//Recibe los mensajes del cliente
+        
+        if(jugador == undefined){
+            jugador = { id: data.jugador, color: "red" }
+            jugadores.push(jugador);
+            console.log(jugadores)
+        }else{
+            if(jugador2 == undefined){
+                jugador2 = { id: data.jugador, color: "green" }
+                jugadores.push(jugador2);
+                console.log(jugadores)
+            }
+            else{
+                espectador = { id: data.jugador }
+                espectadores.push(espectador)
+            }
+        }
+        socket.emit("conexionGame", {jugadores: jugadores, espectadores: espectadores});//Envia mensaje a los clientes
+    })
+
+    socket.on("tableroCambiado", data =>{
+        
+        let intervalStart = data.intervalStart
+
+        if(tablero[data.IDcelda] == 0){
+            if(data.colorCelda == "red"){
+                tablero[data.IDcelda] = 1;
+                puntuacionRojo++
+            }else{
+                tablero[data.IDcelda] = 2;
+                puntuacionVerde++;
+            }
+        }
+        if(intervalStart){
+            interval++;
+            if(interval = 1){
+                setInterval(() => {
+                    contador++;
+                }, 1000);
+            }
+        }
+        console.log(tablero);
+        socket.broadcast.emit("tableroCambiado", {tablero: tablero, puntuacionRojo: puntuacionRojo, puntuacionVerde: puntuacionVerde, contador:contador});
+    })
+});
 
 server.listen(3000, () => console.log("Iniciant Servidor al port 3000"));

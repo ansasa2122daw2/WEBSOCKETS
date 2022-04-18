@@ -1,11 +1,7 @@
 class Jugador {
-	constructor(identificador, nombre, pass, puntuacion, tiempo) {
+	color;
+	constructor(identificador) {
 		this.identificador = identificador;
-		this.nombre = nombre;
-		this.pass = pass;
-		this.puntuacion = puntuacion;
-		this.tiempo = tiempo;
-		this.ready = false;
 	}
 
 	getNombre() {

@@ -1,23 +1,36 @@
-extends layout
+html
+    head
+      link(rel='stylesheet' href='/header.css')
+      link(rel='stylesheet' href='/game.css')
+      script(src="/socket.io/socket.io.js")
+      script(src="/game.js")
+    body
+        div(class="header")
+            div(class="imagenesMenu1")
+                img(id="express", src="/express.png")
+                img(id="websockets", src="/sockets.png")
+            h1(id="titulo") SquareFever
+            div(class="imagenesMenu2")
+                img(id="pug", src="/pug.png")
+        h2 Partida
+        h4(id="timer") 0
+        div(class="divGame")
+            div(class="jugadorTu")
+                h4 Jugador 1
+                img(id="user" src="/user.png")
+                div(id="colorJugadorTu")
+                h2(id="puntuacionRojo") 0
 
-block contingut
-    h2 Partida
-    h4(id="timer") 0
-    div(class="divGame")
-        div(class="jugadorTu")
-            h4 Jugador 1
-            img(id="user" src="/user.png")
-            div(id="colorJugadorTu")
-
-        div(class="divTablero")
-            table(id="tablaPartida" width="700px" height="600px" border="0" cellspacing="2" cellpadding="2" bgcolor="#000000")
-                - for (let x = 0; x < 5; x++)
-                    tr(bgcolor="white")
-                        - for (let y = 0; y < 7; y++)
-                            td(bgcolor="white")
-        div(class="jugadorContrario")
-            h4 Jugador 2
-            img(id="user" src="/user.png")
-            div(id="colorJugadorContrario")
+            div(class="divTablero")
+                table(id="tablaPartida" width="700px" height="600px" border="0" cellspacing="2" cellpadding="2" bgcolor="#000000")
+                    - for (let x = 0; x < 5; x++)
+                        tr(bgcolor="white" )
+                            - for (let y = (7*x); y < (7*x)+7; y++)
+                                td(bgcolor="white" id=y)
+            div(class="jugadorContrario")
+                h4 Jugador 2
+                img(id="user" src="/user.png")
+                div(id="colorJugadorContrario")
+                h2(id="puntuacionVerde") 0
         
         

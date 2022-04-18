@@ -37,3 +37,11 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#puntuacionRojo{
+    margin-bottom: 10px;
+}
+
+#puntuacionVerde{
+    margin-bottom: 10px;
+}
