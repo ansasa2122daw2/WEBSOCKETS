@@ -26,19 +26,6 @@ app.get("/game", (req, res) => res.render("game"));
 app.get("/menu", (req, res) => res.render("menu"));
 app.get("/login", (req, res) => res.render("login"));
 
-app.get("/puntuaciones", (req, res) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("WebSocketss");
-        dbo.collection("Games").find({}).toArray(function (err, partides) {
-            if (err) throw err;
-            console.log(partides);
-            db.close();
-            res.render("stats",{partides:partides})
-        });
-    });
-});
-
 //login
 app.post("/loginMongo", (req, res) => {
     let nombre = req.body.nombre;
@@ -88,6 +75,20 @@ app.post("/entrarPartida", (req, res) => {
     }
 });
 
+//VER PUNTUACIONES
+app.get("/puntuaciones", (req, res) => {
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("WebSocketss");
+        dbo.collection("Partides").find({}).toArray(function (err, partides) {
+            if (err) throw err;
+            console.log(partides);
+            db.close();
+            res.render("puntuaciones",{partides:partides})
+        });
+    });
+});
+
 //websockets
 
 //Todos los jugadores
@@ -101,6 +102,9 @@ let puntuacionRojo = 0;
 let puntuacionVerde = 0;
 let contador = 0;
 let interval = 0;
+let tableroLleno = false;
+let ganador = 0;
+
 
 wss.on("connection", socket => {
 
@@ -124,11 +128,28 @@ wss.on("connection", socket => {
                 espectadores.push(espectador)
             }
         }
-        socket.emit("conexionGame", {jugadores: jugadores, espectadores: espectadores});//Envia mensaje a los clientes
+        socket.emit("conexionGame", {jugadores: jugadores, espectadores: espectadores, tablero:tablero});//Envia mensaje a los clientes
     })
 
     socket.on("tableroCambiado", data =>{
-        
+        console.log("chekiando el tablero servidor")
+            
+            if(tablero.indexOf(0) == -1){
+                tableroLleno = true;
+                if(tableroLleno){
+                    if(puntuacionRojo > puntuacionVerde){
+                        console.log("ha ganao el rojo")
+                        ganador = 1
+                        guardarGanador(ganador, contador)
+                    }
+                    else {
+                        console.log("ha ganao el verde")
+                        ganador = 2
+                        guardarGanador(ganador, contador)
+                    }
+                }
+            }
+
         let intervalStart = data.intervalStart
 
         if(tablero[data.IDcelda] == 0){
@@ -149,8 +170,50 @@ wss.on("connection", socket => {
             }
         }
         console.log(tablero);
-        socket.broadcast.emit("tableroCambiado", {tablero: tablero, puntuacionRojo: puntuacionRojo, puntuacionVerde: puntuacionVerde, contador:contador});
+        socket.broadcast.emit("tableroCambiado", {tablero: tablero, puntuacionRojo: puntuacionRojo, puntuacionVerde: puntuacionVerde, contador:contador ,tableroLleno:tableroLleno, ganador: ganador});
     })
+
+    socket.on("acabarGame", () =>{
+        jugadores = [];
+        espectadores = [];
+        jugador = undefined;
+        jugador2 = undefined;
+        espectador = undefined;
+        tablero = new Array(35).fill(0);
+        puntuacionRojo = 0;
+        puntuacionVerde = 0;
+        contador = 0;
+        interval = 0;
+        tableroLleno = false;
+        ganador = 0
+    })
+
 });
+
+function guardarGanador(ganador, contador){
+    let jugadorGanador;
+    let jugadorPerdedor;
+    let contadorPasar = contador;
+    if(ganador == 1){
+        jugadorGanador = "Arnau"
+        jugadorPerdedor = "Andrea"
+    }else{
+        jugadorGanador = "Andrea"
+        jugadorPerdedor = "Arnau"
+    }
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("WebSocketss");
+
+        let partida = { Guanyador: jugadorGanador, Perdedor: jugadorPerdedor, temps: contadorPasar}
+
+        dbo.collection("Partides").insertOne(partida, function (err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            db.close();
+        });
+    });
+}
 
 server.listen(3000, () => console.log("Iniciant Servidor al port 3000"));

@@ -1,0 +1,17 @@
+extends layout
+
+block contingut
+        h2(style="text-align: center;") Puntuacions
+        table(class="taulaPunt")
+            tr 
+                th(scope="col") Guanyador
+                th(scope="col") Perdedor
+                th(scope="col") Temps
+            each partida in partides
+                tr
+                    td=partida.Guanyador
+                    td=partida.Perdedor
+                    td=partida.temps
+        a(href="/menu") Torna al menú
+
+        
